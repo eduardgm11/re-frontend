@@ -5,12 +5,12 @@
         SISTEMA DE INFORMACIÓN
       </div>
 
-      <v-btn to="/tutorials" text>
-        Tutorials
+      <v-btn to="/tarjeta" text>
+        Tarjetas
       </v-btn>
 
       <v-btn to="/add" text>
-        Add
+        Añadir Tarjeta
       </v-btn>
     </v-app-bar>
 
