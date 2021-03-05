@@ -6,12 +6,12 @@
 
     <v-col cols="12" md="4">
       <v-btn small @click="searchTarjeta">
-        Search
+        BUSCAR
       </v-btn>
     </v-col>
 
     <v-col cols="12" sm="12">
-      <v-card class="mx-auto" tile>
+      <v-card class="mx-auto" >
         <v-card-title>Tarjetas</v-card-title>
 
         <v-data-table
@@ -20,17 +20,12 @@
             disable-pagination
             :hide-default-footer="true"
         >
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-icon small class="mr-2" @click="editTutorial(item.id)">mdi-pencil</v-icon>
-            <v-icon small @click="deleteTarjetas(item.id)">mdi-delete</v-icon>
+          <template v-slot:[`item.accion`]="{ item }">
+            <v-icon style="padding-right: 5%"  small @click="downTarjeta(item.id)">mdi-file-pdf</v-icon>
+            <v-icon small class="mr-2" @click="editTarjeta(item.id)">mdi-pencil</v-icon>
+            <v-icon small @click="deleteTarjeta(item.id)">mdi-delete</v-icon>
           </template>
         </v-data-table>
-
-        <v-card-actions v-if="tarjetas.length > 0">
-          <v-btn small color="error" @click="removeAllTarjetas">
-            Remove All
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>
@@ -39,13 +34,13 @@
 <script>
 import TarjetaDataService from "../services/TarjetaDataService";
 export default {
-  name: "tarjeta-list",
+  name: "Tarjeta-list",
   data() {
     return {
       tarjetas: [],
       title: "",
       headers: [
-        { text: "ID tarjeta", align: "start", sortable: false, value: "id_tarjeta" },
+        { text: "ID Tarjeta", align: "start", sortable: false, value: "id_tarjeta" },
         { text: "Gaveta", value: "gaveta", sortable: false },
         { text: "Disciplina", value: "disciplina", sortable: false },
         { text: "Tamaño", value: "tamano", sortable: false },
@@ -53,7 +48,7 @@ export default {
         { text: "Tipo de documento", value: "tipo_documento", sortable: false },
         { text: "Imagenes", value: "imagenes", sortable: false },
         { text: "Observación", value: "observacion", sortable: false },
-        { text: "Actions", value: "actions", sortable: false },
+        { text: "Acciones", value: "accion", sortable: false },
       ],
     };
   },
@@ -73,19 +68,8 @@ export default {
       this.retrieveTarjetas();
     },
 
-    removeAllTarjetas() {
-      TarjetaDataService.deleteAll()
-          .then((response) => {
-            console.log(response.data);
-            this.refreshList();
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-    },
-
     searchTarjeta() {
-      TarjetaDataService.findByTitle(this.title)
+      TarjetaDataService.findByTarjeta(this.title)
           .then((response) => {
             this.tarjetas = response.data.map(this.getDisplayTarjetas);
             console.log(response.data);
@@ -95,11 +79,11 @@ export default {
           });
     },
 
-    editTutorial(id) {
-      this.$router.push({ name: "tutorial-details", params: { id: id } });
+    editTarjeta(id) {
+      this.$router.push({ name: "Tarjeta-details", params: { id:id } });
     },
 
-    deleteTarjetas(id) {
+    deleteTarjeta(id) {
       TarjetaDataService.delete(id)
           .then(() => {
             this.refreshList();
@@ -111,6 +95,7 @@ export default {
 
     getDisplayTarjetas(tarjeta) {
       return {
+        id: tarjeta.id.length > 30 ? tarjeta.id.substr(0, 30) + "..." : tarjeta.id,
         id_tarjeta: tarjeta.id_tarjeta.length > 30 ? tarjeta.id_tarjeta.substr(0, 30) + "..." : tarjeta.id_tarjeta,
         gaveta: tarjeta.gaveta.length > 30 ? tarjeta.gaveta.substr(0, 30) + "..." : tarjeta.gaveta,
         disciplina: tarjeta.disciplina.length > 30 ? tarjeta.disciplina.substr(0, 30) + "..." : tarjeta.disciplina,
@@ -130,6 +115,6 @@ export default {
 
 <style>
 .list {
-  max-width: 750px;
+  max-width: 1100px;
 }
 </style>

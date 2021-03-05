@@ -21,12 +21,8 @@ class TarjetaDataService {
         return http.delete(`/Tarjetas/${id}`);
     }
 
-    deleteAll() {
-        return http.delete(`/Tarjetas`);
-    }
-
-    findByTitle(title) {
-        return http.get(`/Tarjetas?id_tarjeta=${title}`);
+    findByTarjeta(id_tarjeta) {
+        return http.get(`/Tarjetas?buscaTarjeta=${id_tarjeta}`);
     }
 }
 

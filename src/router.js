@@ -8,18 +8,18 @@ export default new Router({
     routes: [
         {
             path: "/",
-            alias: "/tarjeta",
-            name: "tarjeta",
+            alias: "/Tarjeta",
+            name: "Tarjeta-list",
             component: () => import("./components/TarjetaList")
         },
         {
-            path: "/tarjeta/:id",
-            name: "tarjeta-details",
+            path: "/Tarjeta/:id",
+            name: "Tarjeta-details",
             component: () => import("./components/Tarjeta")
         },
         {
             path: "/add",
-            name: "add",
+            name: "Add",
             component: () => import("./components/AddTarjeta")
         }
     ]

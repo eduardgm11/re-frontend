@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app dark>
-      <div class="d-flex align-center mr-2">
+      <div style="padding-right: 3%" class="d-flex align-center mr-2">
         SISTEMA DE INFORMACIÓN
       </div>
 

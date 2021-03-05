@@ -6,80 +6,59 @@
       <v-text-field
           v-model="currentTarjeta.id_tarjeta"
           :rules="[(v) => !!v || 'El nombre es requerido']"
-          label="id Tarjeta"
-          required
+          label="ID Tarjeta"
+
       ></v-text-field>
 
       <v-text-field
           v-model="currentTarjeta.gaveta"
           :rules="[(v) => !!v || 'El nombre de la gaveta es requerida']"
           label="Gaveta"
-          required
+
       ></v-text-field>
       <v-text-field
           v-model="currentTarjeta.disciplina"
           :rules="[(v) => !!v || 'El nombre de la gaveta es requerida']"
           label="Disciplina"
-          required
+
       ></v-text-field>
       <v-text-field
           v-model="currentTarjeta.tamano"
           :rules="[(v) => !!v || 'El nombre de la gaveta es requerida']"
           label="Tamaño"
-          required
+
       ></v-text-field>
       <v-text-field
           v-model="currentTarjeta.unidad"
           :rules="[(v) => !!v || 'El nombre de la gaveta es requerida']"
           label="Unidad"
-          required
+
       ></v-text-field>
       <v-text-field
           v-model="currentTarjeta.tipo_documento"
           :rules="[(v) => !!v || 'El nombre de la gaveta es requerida']"
           label="Tipo de documento"
-          required
+
       ></v-text-field>
       <v-text-field
           v-model="currentTarjeta.imagenes"
           :rules="[(v) => !!v || 'El nombre de la gaveta es requerida']"
           label="Imagenes"
-          required
+
       ></v-text-field>
       <v-text-field
           v-model="currentTarjeta.observacion"
           :rules="[(v) => !!v || 'El nombre de la gaveta es requerida']"
           label="Observación"
-          required
+
       ></v-text-field>
 
-      <v-text-field
-          v-model="currentTarjeta.PDF"
-          :rules="[(v) => !!v || 'El nombre de la gaveta es requerida']"
-          label="PDF"
-          required
-      ></v-text-field>
-
-      <!--
-      <label><strong>Status:</strong></label>
-      {{ currentTarjeta.published ? "Tarjeta Publicada" : "Pendiente" }}
-
-      <v-divider class="my-5"></v-divider>
-
-      <v-btn v-if="currentTarjeta.published"
-             @click="updatePublished(false)"
-             color="primary" small class="mr-2"
-      >
-        UnPublish
-      </v-btn>
-
-      <v-btn v-else
-             @click="updatePublished(true)"
-             color="primary" small class="mr-2"
-      >
-        Publish
-      </v-btn>
-      -->
+      <template>
+        <v-file-input
+            accept="file/pdf"
+            label="PDF"
+        ></v-file-input>
+      </template>
 
       <v-btn color="error" small class="mr-2" @click="deleteTarjeta">
         Borrar Tarjeta
@@ -102,11 +81,10 @@
 import TarjetaDataService from "../services/TarjetaDataService";
 
 export default {
-  name: "Tarjeta",
+  name: "Tarjeta-details",
   data() {
     return {
-      currentTarjeta: null,
-      message: "",
+      currentTarjeta: [],
     };
   },
   methods: {
@@ -114,28 +92,29 @@ export default {
       TarjetaDataService.get(id)
           .then((response) => {
             this.currentTarjeta = response.data;
+            this.currentTarjeta = response.data.map(this.getDisplayTarjetas);
             console.log(response.data);
           })
           .catch((e) => {
             console.log(e);
           });
     },
-    updatePublished(status) {
-      var data = {
-        id: this.currentTarjeta.id,
-        title: this.currentTarjeta.title,
-        description: this.currentTarjeta.description,
-        published: status,
-      };
 
-      TarjetaDataService.update(this.currentTarjeta.id, data)
-          .then((response) => {
-            this.currentTarjeta.published = status;
-            console.log(response.data);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+    refreshList() {
+      this.getTarjeta();
+    },
+
+    getDisplayTarjetas() {
+      return  {
+        id_tarjeta: this.currentTarjeta.id_tarjeta,
+        gaveta: this.currentTarjeta.gaveta,
+        disciplina: this.currentTarjeta.disciplina,
+        tamano: this.currentTarjeta.tamano,
+        unidad: this.currentTarjeta.unidad,
+        tipo_documento: this.currentTarjeta.tipo_documento,
+        imagenes: this.currentTarjeta.imagenes,
+        observacion: this.currentTarjeta.observacion,
+      };
     },
 
     updateTarjeta() {
@@ -161,15 +140,15 @@ export default {
     },
   },
   mounted() {
-    this.message = "";
     this.getTarjeta(this.$route.params.id);
+
   },
 };
 </script>
 
 <style>
 .edit-form {
-  max-width: 300px;
+  max-width: 600px;
   margin: auto;
 }
 </style>

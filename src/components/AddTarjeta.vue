@@ -53,12 +53,12 @@
             label="Observación"
             required
         ></v-text-field>
-        <v-text-field
-            v-model="tarjeta.PDF"
-            :rules="[(v) => !!v || 'Gaveta requerida']"
-            label="PDF"
-            required
-        ></v-text-field>
+        <template>
+          <v-file-input
+              accept="file/pdf"
+              label="PDF"
+          ></v-file-input>
+        </template>
 
       </v-form>
 
@@ -100,12 +100,14 @@ export default {
         tipo_documento: "",
         imagenes: 0,
         observacion: "",
-        PDF: null}
+        PDF: null},
+      submitted: false,
     };
   },
   methods: {
     GuardarTarjeta() {
       var data = {
+        id: null,
         id_tarjeta: this.tarjeta.id_tarjeta,
         gaveta: this.tarjeta.gaveta,
         tamano: this.tarjeta.tamano,
@@ -114,7 +116,7 @@ export default {
         tipo_documento: this.tarjeta.tipo_documento,
         imagenes: this.tarjeta.imagenes,
         observacion: this.tarjeta.observacion,
-        PDF: this.tarjeta.PDF,
+
       };
 
       TarjetaDataService.create(data)
@@ -138,6 +140,6 @@ export default {
 
 <style>
 .submit-form {
-  max-width: 300px;
+  max-width: 600px;
 }
 </style>
