@@ -9,11 +9,12 @@
         Tarjetas
       </v-btn>
 
+      <!--
       <v-btn to="/add" text>
         Añadir Tarjeta
       </v-btn>
     </v-app-bar>
-
+    -->
     <v-main>
       <router-view />
     </v-main>
