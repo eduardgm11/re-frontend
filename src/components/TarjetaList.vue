@@ -21,9 +21,18 @@
             :hide-default-footer="true"
         >
           <template v-slot:[`item.accion`]="{ item }">
-            <v-icon style="padding-right: 5%"  small @click="downTarjeta(item.id)">mdi-file-pdf</v-icon>
+
+            <a :href="'http://localhost:8000/PDF/' + item.PDF" target="_blank">
+              Descargar
+            </a>
+            <!--
+            <v-icon small class="mr-2" @click="forceFileDownload(item.PDF)">
+              mdi-file-pdf</v-icon>
+              -->
+            <!--
             <v-icon small class="mr-2" @click="editTarjeta(item.id)">mdi-pencil</v-icon>
             <v-icon small @click="deleteTarjeta(item.id)">mdi-delete</v-icon>
+            -->
           </template>
         </v-data-table>
       </v-card>
@@ -83,6 +92,15 @@ export default {
       this.$router.push({ name: "Tarjeta-details", params: { id:id } });
     },
 
+    forceFileDownload(Response){
+      const url = window.URL.createObjectURL(new Blob([Response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'file.png') //or any other extension
+      document.body.appendChild(link)
+      link.click()
+    },
+
     deleteTarjeta(id) {
       TarjetaDataService.delete(id)
           .then(() => {
@@ -104,6 +122,7 @@ export default {
         tipo_documento: tarjeta.tipo_documento.length > 30 ? tarjeta.tipo_documento.substr(0, 30) + "..." : tarjeta.tipo_documento,
         imagenes: tarjeta.imagenes.length > 30 ? tarjeta.imagenes.substr(0, 30) + "..." : tarjeta.imagenes,
         observacion: tarjeta.observacion.length > 30 ? tarjeta.observacion.substr(0, 30) + "..." : tarjeta.observacion,
+        PDF: tarjeta.PDF.length > 30 ? tarjeta.PDF.substr(0, 30) + "..." : tarjeta.PDF,
       };
     },
   },
@@ -117,4 +136,5 @@ export default {
 .list {
   max-width: 1100px;
 }
+</style>
 </style>
